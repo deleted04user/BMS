@@ -1,6 +1,6 @@
 #include "utils-bms.h"
 
-void main() {
+int main(void) {
     int cols;
     terminal_size(&cols);
     int input;
@@ -224,4 +224,5 @@ void main() {
                 p_exit(3);
                 break;
         }
+    return 0;
 }

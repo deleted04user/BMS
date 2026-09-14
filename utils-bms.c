@@ -1,23 +1,17 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <sys/time.h>
-#include <sys/ioctl.h>
-#include <string.h>
-#include <unistd.h>
-#include <math.h>
+#include "utils-bms.h"
 
-int rand_ms() {
+int rand_ms(void) {
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return tv.tv_usec;
 }
-int generate_id() {
+int generate_id(void) {
     srand((rand_ms()));
     int c;
     do {
         c = rand();
     } while (c < 10000 || c > 99999);
+    return c;
 }
 void p_exit(int m) {
     for (int i = m; i > 0; i--) {
@@ -36,9 +30,7 @@ void terminal_size(int *cols) {
 
 void center(const char *text, int cols) {
     
-    int width = strlen(text);
     int margin = (cols / 2) - 10;
-    int new_col = margin;
     if (cols < 150) {
         margin = (cols / 2) - 15;
     }
@@ -55,11 +47,6 @@ void center(const char *text, int cols) {
     printf("%s", text);
     // printf("\n");
 }
-typedef struct creation_date {
-    int day;
-    int month;
-    int year;
-}c_date;
 void actual_time(c_date *date) {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -67,28 +54,6 @@ void actual_time(c_date *date) {
     (date -> month) = (int)tm.tm_mon + 1;
     (date -> day) = (int)tm.tm_mday;
 }
-//structure compte
-typedef struct account {
-    int id_account;
-    int id_client;
-    int balance;
-    c_date date;
-    struct {
-        c_date date_op;
-        int op;
-    };
-    struct account *next_account;
-}account;
-//structure client
-typedef struct client {
-    char last_name[50];
-    char first_name[50];
-    char phone_num[12];
-    char profession[50];
-    int id_client;
-    struct client *next_client;
-}client;
-
 //fonction d'ajout clients
 void add_client(client **first_client) {
     static int id = 0;
@@ -232,7 +197,7 @@ void delete_client(client **head_client) {
 }
 //fonction de modification client
 void modify_client(client **first_client, int id, int choice) {
-    int cols, inp;
+    int cols;
     terminal_size(&cols);
     client *ptr = *first_client;
     while (ptr -> id_client != id) {
@@ -275,7 +240,6 @@ void modify_client(client **first_client, int id, int choice) {
 //fonction pour enregistrer les donnees dans un fichier externe
 void read_clients(client **first_client) {
     int cols;
-    static int num, i = 0;
     terminal_size(&cols);
     FILE* fd_r = fopen("clients.txt", "r");
     if (fd_r == NULL) {
@@ -647,7 +611,7 @@ void free_all(client **client_start, account **account_start) {
 }
 //fonction qui affiche le menu voulu
 void menu(int menu_number) {
-    int cols, inp;
+    int cols;
     terminal_size(&cols);
     switch(menu_number) {
         case 1 : 
@@ -707,6 +671,6 @@ void menu(int menu_number) {
                 break;
             }
         default : 
-            p_exit;
+            p_exit(1);
     }
 }

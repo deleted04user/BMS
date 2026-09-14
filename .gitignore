@@ -1,0 +1,4 @@
+bms
+*.o
+*.out
+.DS_Store

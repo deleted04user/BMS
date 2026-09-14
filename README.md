@@ -7,6 +7,7 @@
 ![Language](https://img.shields.io/badge/Language-C-00599C?style=for-the-badge&logo=c)
 ![Interface](https://img.shields.io/badge/Interface-Terminal-1F2937?style=for-the-badge&logo=gnometerminal&logoColor=white)
 ![Platform](https://img.shields.io/badge/Platform-Unix--like-0F766E?style=for-the-badge&logo=linux&logoColor=white)
+[![C build](https://github.com/deleted04user/BMS/actions/workflows/build.yml/badge.svg)](https://github.com/deleted04user/BMS/actions/workflows/build.yml)
 
 A compact academic project demonstrating structured programming, linked lists, file persistence, modular code organization, and interactive terminal workflows.
 
@@ -71,8 +72,10 @@ BMS/
 ├── bms.c          # Application entry point and menu flow
 ├── utils-bms.c    # Data structures and banking operations
 ├── utils-bms.h    # Function declarations
+├── Makefile       # Reproducible build and syntax checks
 ├── clients.txt    # Persistent client records
 ├── accounts.txt   # Persistent account records
+├── LICENSE        # MIT license
 └── README.md      # Project documentation
 ```
 
@@ -95,13 +98,13 @@ git clone https://github.com/deleted04user/BMS.git
 cd BMS
 ```
 
-Compile the application:
+Build the application:
 
 ```bash
-gcc bms.c -o bms -lm
+make
 ```
 
-> The current header directly includes `utils-bms.c`, so compile `bms.c` only. Compiling both C files separately will produce duplicate-definition errors.
+The source files are independent translation units with shared declarations in `utils-bms.h`. To run compiler checks without producing a binary, use `make check`.
 
 ### Run
 
@@ -158,14 +161,15 @@ This repository is an educational project and must not be used as production ban
 - Plain-text file persistence
 - No database or transaction guarantees
 - Limited input validation and error recovery
-- No automated test suite
+- CI currently verifies a strict warning-enabled build; behavioral tests are still planned
 - Platform-dependent terminal behavior
 - Only the latest account operation is stored
 
 ## Roadmap
 
-- [ ] Move structure declarations into a standalone header
-- [ ] Compile source files as independent translation units
+- [x] Move structure declarations into a guarded header
+- [x] Compile source files as independent translation units
+- [x] Add a reproducible Makefile and CI build
 - [ ] Replace text files with SQLite or PostgreSQL
 - [ ] Add authentication and authorization
 - [ ] Add complete transaction history and audit logs
@@ -176,3 +180,7 @@ This repository is an educational project and must not be used as production ban
 ## Disclaimer
 
 This software was created for learning and demonstration purposes. It does not provide the security, accuracy, compliance, or reliability required for real financial operations.
+
+## License
+
+Released under the [MIT License](LICENSE).
